@@ -53,11 +53,7 @@ jobs:
       - name: Get current task definition
         id: get-task-def
         run: |
-          {
-            echo 'ECS_TASK_DEFINITION<<EOF'
-            aws ecs describe-task-definition --task-definition "$ECS_TASK_FAMILY" --region "$AWS_REGION" --query 'taskDefinition'
-            echo EOF
-          } >> "$GITHUB_ENV"
+            aws ecs describe-task-definition --task-definition "$ECS_TASK_FAMILY" --region "$AWS_REGION" --query 'taskDefinition' > task-definition.json
 
 #      - name: Get env
 #        run: echo "The taskdef  is $ECS_TASK_DEFINITION"
@@ -82,7 +78,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
