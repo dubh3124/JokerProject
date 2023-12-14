@@ -15,11 +15,13 @@ on:
       - main
 
 env:
-  AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: us-east-1                  # set this to your preferred AWS region, e.g. us-west-1
+  AWS_ROLE_ARN: arn:aws:iam::166531731337:role/github-actions
   ECR_REPOSITORY: MY_ECR_REPOSITORY           # set this to your Amazon ECR repository name
   ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
   ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_FAMILY: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+  ECS_TASK_FAMILY:
+  ECS_TASK_DEFINITION:
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
@@ -39,17 +41,22 @@ jobs:
         with:
 #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
 #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: ${{vars.AWS_ROLE_ARN}}
-          role-session-name: ODICSession_${{ github.run_id }}
+          role-to-assume: ${{env.AWS_ROLE_ARN}}
+          role-session-name: OIDCSession_${{ github.run_id }}
           aws-region: us-east-1
 
       - name: Get current task definition
         id: get-task-def
-        run: >
-          aws ecs describe-task-definition
-          --task-definition "$ECS_TASK_FAMILY" --region "$AWS_DEFAULT_REGION" --query 'taskDefinition'
-          > task-definition.json
+        run: |
+          {
+            echo 'ECS_TASK_DEFINITION<<EOF'
+            aws ecs describe-task-definition
+            --task-definition "$ECS_TASK_FAMILY" --region "$AWS_REGION" --query 'taskDefinition'
+            echo EOF
+          } >> "$GITHUB_ENV"
 
+      - name: Get env
+        run: echo "The taskdef  is $ECS_TASK_DEFINITION"
 #      - name: Login to Amazon ECR
 #        id: login-ecr
 #        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
