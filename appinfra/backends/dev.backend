@@ -1,0 +1,4 @@
+bucket = "buildatscale-terraform-state-files"
+key = "basappinfra.tfstate"
+region = "us-east-1"
+encrypt = true
