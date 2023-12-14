@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
       values = [
-        "JokerProject:dubh3124/*:*"
+        "repo:dubh3124/JokerProject:*"
       ]
     }
   }
