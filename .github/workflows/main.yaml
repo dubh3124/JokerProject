@@ -56,7 +56,7 @@ jobs:
         run: |
           {
             echo 'ECS_TASK_DEFINITION<<EOF'
-            AWS_PROFILE=$AWS_ROLE_ARN aws ecs describe-task-definition --task-definition "$ECS_TASK_FAMILY" --region "$AWS_REGION" --query 'taskDefinition'
+            aws ecs describe-task-definition --task-definition "$ECS_TASK_FAMILY" --region "$AWS_REGION" --query 'taskDefinition'
             echo EOF
           } >> "$GITHUB_ENV"
 
