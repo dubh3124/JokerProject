@@ -35,6 +35,8 @@
 
 This project a basic design of a scalable web3 application. Its infrastructure is deployed on AWS. 
 
+[Click Here](http://lb-buildatscale-dev-2126392032.us-east-1.elb.amazonaws.com/) to view the running application
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -95,7 +97,7 @@ This command will go through each Terraform folder and run `Terraform destroy` f
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Overview
-This Terraform implementation is a set of 2 containerized app servers deployed using ECS Fargate with each container process deployed to its own private subnet in a Highly Available VPC (2 private subnets, 2 public subnets across 2 AZs); the app servers are also fronted by an Elastic Load balancer (ALB) deployed to the VPC across the public subnets.  Also, to showcase a CI/CD implementation, I created a pipeline that builds the API Server image and deploys new containers.
+This Terraform implementation is a set of 2 containerized app servers deployed using ECS Fargate with each container process deployed to its own private subnet in a Highly Available VPC (2 private subnets, 2 public subnets across 2 AZs); the app servers are also fronted by an Elastic Load balancer (ALB) deployed to the VPC across the public subnets.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -120,6 +122,7 @@ The CI/CD pipeline is built using GitHub Actions. The pipeline is triggered on a
 ### Future Improvements
 - Write tests for the application
 - Implement a CI/CD pipeline for the infrastructure repos
+- Implement Blue/Green deployment strategy
 - Refactor the Terraform logic to handle Multi-Region deployments for improving Disater Recovery Strategy
 - Better logging, implement monitoring system
 - Add an EC2 SSH bastion to the public subnet that connected to ECS instances in private subnets allowing administration
