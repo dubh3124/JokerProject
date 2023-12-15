@@ -18,19 +18,19 @@ resource "aws_ecs_task_definition" "jwtaskdef" {
       secrets = [
         {
           name = "CHOKIDAR_USEPOLLING"
-          valueFrom = aws_secretsmanager_secret.chokidar_usepolling.arn
+          valueFrom = "${aws_secretsmanager_secret.jwsecrets.arn}:CHOKIDAR_USEPOLLING"
         },
         {
           name = "REACT_APP_JOKESTER_FRONTEND_URL"
-          valueFrom = aws_secretsmanager_secret.jokester_frontend_url.arn
+          valueFrom = "${aws_secretsmanager_secret.jwsecrets.arn}:REACT_APP_JOKESTER_FRONTEND_URL"
         },
         {
           name = "REACT_APP_JOKESTER_CONTRACT"
-          valueFrom = aws_secretsmanager_secret.jokester_contract.arn
+          valueFrom = "${aws_secretsmanager_secret.jwsecrets.arn}:REACT_APP_JOKESTER_CONTRACT"
         },
         {
           name = "REACT_APP_JOKESTER_WEB3_STORAGE"
-          valueFrom = aws_secretsmanager_secret.jokester_web3_storage.arn
+          valueFrom = "${aws_secretsmanager_secret.jwsecrets.arn}:REACT_APP_JOKESTER_WEB3_STORAGE"
         }
       ]
       environment = [

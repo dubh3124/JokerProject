@@ -66,10 +66,7 @@ resource "aws_iam_role_policy" "secretmanageraccess" {
           "secretsmanager:ListSecretVersionIds"
         ],
         "Resource": [
-          aws_secretsmanager_secret.jokester_web3_storage.arn,
-          aws_secretsmanager_secret.jokester_contract.arn,
-          aws_secretsmanager_secret.jokester_frontend_url.arn,
-          aws_secretsmanager_secret.chokidar_usepolling.arn
+          aws_secretsmanager_secret.jwsecrets.arn
         ]
       }
     ]
