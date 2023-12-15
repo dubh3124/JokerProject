@@ -46,6 +46,27 @@ data "aws_iam_policy_document" "github_actions" {
   }
 }
 
+# Allow github_actions to get secrets from aws secrets manager
+resource "aws_iam_role_policy" "github_actions" {
+  role = aws_iam_role.github_actions.name
+  policy      = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecrets",
+        ]
+        Resource = [
+          aws_secretsmanager_secret.jwsecrets.arn
+
+        ]
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "ECRFullAccess" {
   role       = aws_iam_role.github_actions.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"

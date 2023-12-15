@@ -69,7 +69,7 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg contract_address=SECRETS-BUILDATSCALE-DEV_REACT_APP_JOKESTER_CONTRACT  --build-arg web3_storage=SECRETS-BUILDATSCALE-DEV_REACT_APP_JOKESTER_WEB3_STORAGE .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg contract_address=$SECRETS-BUILDATSCALE-DEV_REACT_APP_JOKESTER_CONTRACT  --build-arg web3_storage=$SECRETS-BUILDATSCALE-DEV_REACT_APP_JOKESTER_WEB3_STORAGE .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
