@@ -50,6 +50,15 @@ jobs:
           role-session-name: OIDCSession_${{ github.run_id }}
           aws-region: us-east-1
 
+#      - name: Get secrets by name
+#        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+#        with:
+#          secret-ids: |
+#            arn:aws:secretsmanager:us-east-1:166531731337:secret:react_app_jokester_contract-EF0Zdg
+#            arn:aws:secretsmanager:us-east-1:166531731337:secret:react_app_jokester_frontend_url-NLBHIl
+#            arn:aws:secretsmanager:us-east-1:166531731337:secret:react_app_jokester_web3_storage-NLBHIl
+#            arn:aws:secretsmanager:us-east-1:166531731337:secret:chokidar_usepolling-YLyXhk
+
       - name: Get current task definition
         id: get-task-def
         run: |

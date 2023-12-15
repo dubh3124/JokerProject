@@ -15,12 +15,31 @@ resource "aws_ecs_task_definition" "jwtaskdef" {
         containerPort = local.app_port
         hostport = local.app_port
       }]
+      secrets = [
+        {
+          name = "CHOKIDAR_USEPOLLING"
+          valueFrom = aws_secretsmanager_secret.chokidar_usepolling.arn
+        },
+        {
+          name = "REACT_APP_JOKESTER_FRONTEND_URL"
+          valueFrom = aws_secretsmanager_secret.jokester_frontend_url.arn
+        },
+        {
+          name = "REACT_APP_JOKESTER_CONTRACT"
+          valueFrom = aws_secretsmanager_secret.jokester_contract.arn
+        },
+        {
+          name = "REACT_APP_JOKESTER_WEB3_STORAGE"
+          valueFrom = aws_secretsmanager_secret.jokester_web3_storage.arn
+        }
+      ]
       environment = [
         {
           name = "S3_UPLOAD_BUCKET"
           value = aws_s3_bucket.jwappupload.bucket
         }
       ]
+
       logConfiguration = {
         logDriver = "awslogs",
         options = {

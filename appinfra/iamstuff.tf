@@ -52,6 +52,32 @@ resource "aws_iam_role_policy" "s3access" {
   })
 }
 
+resource "aws_iam_role_policy" "secretmanageraccess" {
+  role       = aws_iam_role.jwapp-task-execution-role.name
+  policy     = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "SecretManagerAccess",
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:ListSecretVersionIds"
+        ],
+        "Resource": [
+          aws_secretsmanager_secret.jokester_web3_storage.arn,
+          aws_secretsmanager_secret.jokester_contract.arn,
+          aws_secretsmanager_secret.jokester_frontend_url.arn,
+          aws_secretsmanager_secret.chokidar_usepolling.arn
+        ]
+      }
+    ]
+  })
+}
+
+
+
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   role       = aws_iam_role.jwapp-task-execution-role.name
   policy_arn = data.aws_iam_policy.ecs_task_execution_role.arn

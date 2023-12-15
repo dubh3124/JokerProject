@@ -46,10 +46,37 @@ data "aws_iam_policy_document" "github_actions" {
   }
 }
 
-# Give github_actions ECS fully policy role
-resource "aws_iam_role_policy_attachment" "github_actions" {
+# Allow github_actions to get secrets from aws secrets manager
+resource "aws_iam_role_policy" "github_actions" {
+  role = aws_iam_role.github_actions.name
+  policy      = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecrets",
+        ]
+        Resource = [
+          aws_secretsmanager_secret.jokester_web3_storage.arn,
+          aws_secretsmanager_secret.jokester_contract.arn,
+          aws_secretsmanager_secret.jokester_frontend_url.arn,
+          aws_secretsmanager_secret.chokidar_usepolling.arn
+        ]
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ECRFullAccess" {
   role       = aws_iam_role.github_actions.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "ECSFullAcces" {
+  role       = aws_iam_role.github_actions.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
 }
 
 
