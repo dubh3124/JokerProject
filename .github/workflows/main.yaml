@@ -41,14 +41,12 @@ jobs:
           role-session-name: OIDCSession_${{ github.run_id }}
           aws-region: us-east-1
 
-#      - name: Get secrets by name
-#        uses: aws-actions/aws-secretsmanager-get-secrets@v1
-#        with:
-#          secret-ids: |
-#            arn:aws:secretsmanager:us-east-1:166531731337:secret:react_app_jokester_contract-EF0Zdg
-#            arn:aws:secretsmanager:us-east-1:166531731337:secret:react_app_jokester_frontend_url-NLBHIl
-#            arn:aws:secretsmanager:us-east-1:166531731337:secret:react_app_jokester_web3_storage-NLBHIl
-#            arn:aws:secretsmanager:us-east-1:166531731337:secret:chokidar_usepolling-YLyXhk
+      - name: Get secrets by name
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: |
+            arn:aws:secretsmanager:us-east-1:166531731337:secret:secrets-buildatscale-dev-s6HLjG
+          parse-json: true
 
       - name: Get current task definition
         id: get-task-def
@@ -71,7 +69,7 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg contract_address=SECRETS-BUILDATSCALE-DEV_REACT_APP_JOKESTER_CONTRACT  --build-arg web3_storage=SECRETS-BUILDATSCALE-DEV_REACT_APP_JOKESTER_WEB3_STORAGE .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 

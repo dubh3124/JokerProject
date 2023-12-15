@@ -6,6 +6,11 @@ COPY ./package.json /app/
 COPY ./package-lock.json /app/
 RUN npm install
 COPY . /app
+ARG contract_address
+ARG web3_storage
+RUN touch .env
+RUN echo "REACT_APP_JOKESTER_CONTRACT=${contract_address}" >> .env
+RUN echo "REACT_APP_JOKESTER_WEB3_STORAGE=${web3_storage}" >> .env
 RUN npm run build
 
 # stage 2 - build the final image and copy the react build files
